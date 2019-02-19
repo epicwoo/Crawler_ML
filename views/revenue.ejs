@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="refresh" content="30" />
+  <link rel="icon" href="../public/assets/img/LOGO.png">
+
+  <title>農業智慧產銷系統</title>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="../public/assets/js/vendor/jquery-slim.min.js"><\/script>')
+    </script>
+  <script src="../public/assets/js/vendor/popper.min.js"></script>
+  <script src="../public/dist/js/bootstrap.min.js"></script>
+  <script src="../public/assets/js/vendor/holder.min.js"></script>
+
+  <link href="../public/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../public/carousel.css" rel="stylesheet">
+  <style type="text/css">
+    .features {
+      text-align: center;
+      font-family: "微軟正黑體", "黑體-繁", sans-serif;
+      color: blue;
+    }
+
+    #predict {
+      text-align: center;
+      font-family: "微軟正黑體", "黑體-繁", sans-serif;
+      color: red;
+    }
+
+    #title1 {
+      font-family: "微軟正黑體", "黑體-繁", sans-serif;
+      padding: 10px 15px;
+      background: white;
+      color: red;
+      border-radius: 4px;
+      border: solid 1px black;
+      text-decoration: none;
+    }
+
+    #title2 {
+      font-family: "微軟正黑體", "黑體-繁", sans-serif;
+      padding: 10px 15px;
+      background: white;
+      color: blue;
+      border-radius: 4px;
+      border: solid 1px black;
+      text-decoration: none;
+    }
+
+    h5,
+    h6 {
+      font-family: "微軟正黑體", "黑體-繁", sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="http://localhost:3000">AIoT01</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="http://localhost:3000/">Home</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="http://localhost:3000/revenue">Revenue <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <br><br>
+
+
+  <div class="container marketing">
+    <p align="center"><b>資訊：台北各市場平均資料(蘋果)</b><br><b id="time">更新日期：</b></p>
+    <br>
+    <div class="row">
+      <div class="col-lg-2">
+      </div>
+      <div class="col-lg-3">
+      </div>
+      <div class="col-lg-2">
+        <h4 align="center" id="title1"><b>預測銷售額</b></h1><br>
+
+          <div>
+            <h6>平均交易量(公斤)</h6>
+            <p id=features_1></p>
+          </div>
+
+          <div>
+            <h6>平均上價(元/公斤)</h6>
+            <p id=features_2></p>
+          </div>
+
+          <div>
+            <h6>平均中價(元/公斤)</h6>
+            <p id=features_3></p>
+          </div>
+
+          <div>
+            <h6>平均下價(元/公斤)</h6>
+            <p id=features_4></p>
+          </div>
+
+          <br>
+          <h5><b>預測平均收入(元)</b>
+            <p id="predict"></p>
+          </h5>
+
+      </div>
+      <div class="col-lg-2">
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <hr>
+  </div>
+
+  <footer class="container">
+    <p class="float-left">@JaeChuang &middot; <a href="https://data.coa.gov.tw/Query/ServiceDetail.aspx?id=037">Source</a>
+      &middot; <a href="https://github.com/epicwoo/revenue">GitHub</a></p>
+  </footer>
+
+  <script>
+    $(document).ready(function () {
+      //讀取日期與特徵資料，並輸出
+      $.getJSON('../public/revenue/features.json', function (featData) {
+
+        var f1 = ''
+        var f2 = ''
+        var f3 = ''
+        var f4 = ''
+
+        $.each(featData, function (i, feat) {
+
+          f1 = '<p class="features">' + '<b>' + feat['data'][0] + '</b>' + '</p>',
+            f2 = '<p class="features">' + '<b>' + feat['data'][1] + '</b>' + '</p>',
+            f3 = '<p class="features">' + '<b>' + feat['data'][2] + '</b>' + '</p>',
+            f4 = '<p class="features">' + '<b>' + feat['data'][3] + '</b>' + '</p>'
+        });
+
+        $('#features_1').after(f1);
+        $('#features_2').after(f2);
+        $('#features_3').after(f3);
+        $('#features_4').after(f4);
+      });
+
+      //讀取預測結果資料，並輸出
+      $.getJSON('../public/revenue/predict.json', function (predData) {
+
+        var p = ''
+        var d = ''
+
+        $.each(predData, function (i, pred) {
+          d = '<b id="time">' + pred['date'] + '</b>',
+            p = '<p id="predict">' + '<b>' + pred['data'] + '</b>' + '</p>'
+        });
+
+        $('#time').after(d);
+        $('#predict').after(p);
+      });
+    });
+  </script>
+</body>
+
+</html>
